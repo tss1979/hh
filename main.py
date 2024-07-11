@@ -2,6 +2,7 @@ from user_interaction import UserInteraction
 from vacancy_controler import VacancyController
 from in_out import InOutController
 
+
 if __name__ == '__main__':
     app = UserInteraction()
     app.run()
