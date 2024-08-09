@@ -23,3 +23,4 @@ dist/
 .idea
 vacancies.txt
 tests/test.txt
+database.ini

@@ -7,13 +7,14 @@ class Vacancy:
     requirements: str
     currency: str
 
-    def __init__(self, name, url, from_, to_, currency, requirements):
+    def __init__(self, name, url, from_, to_, currency, requirements, employer):
         self.name = name
         self.url = url
         self.min_salary = from_
         self.max_salary = to_
         self.currency = currency
         self.requirements = requirements
+        self.employer = employer
 
 
     @staticmethod
@@ -29,6 +30,8 @@ class Vacancy:
     def cast_to_object_list(hh_vacancies: list) -> list:
         '''Функция преобразования набора данных из JSON в список объектов'''
         vacancies = []
+        recommended_employers = ['вкусвилл.', 'яндекс', 'сбер', 'финтех', 'vk', 'ozon', 'газпром', 'альфа', 'иннотех', 'втб',
+                                 'пао']
         for vacancy in hh_vacancies:
             try:
                 name = vacancy.get('name', '')
@@ -39,11 +42,13 @@ class Vacancy:
                 currency = vacancy.get('salary', {}).get('currency', '')
                 from_ = from_ if from_ else 0
                 to_ = to_ if to_ else 0
+                employer = vacancy.get('department', {}).get('name', '')
             except AttributeError:
                 continue
             else:
-                vacancy = Vacancy(name, url, from_, to_, currency, requirements)
-                vacancies.append(vacancy)
+                if any([x in employer.lower().split() for x in recommended_employers]):
+                    vacancy = Vacancy(name, url, from_, to_, currency, requirements, employer)
+                    vacancies.append(vacancy)
         return vacancies
 
     def __str__(self):
